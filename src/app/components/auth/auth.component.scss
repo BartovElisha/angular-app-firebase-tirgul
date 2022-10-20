@@ -1,0 +1,24 @@
+.auth-rapper {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.auth-rapper form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.auth-rapper input {
+    padding: 8px;
+}
+
+.auth-rapper button {
+    padding: 8px;
+    font-size: 24px;
+    background-color: orange;
+    color: white;
+}

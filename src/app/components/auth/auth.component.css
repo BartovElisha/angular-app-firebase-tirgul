@@ -1,0 +1,8 @@
+.auth-rapper {
+  width: 100%;
+  height: 100vh;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+/*# sourceMappingURL=auth.component.css.map */

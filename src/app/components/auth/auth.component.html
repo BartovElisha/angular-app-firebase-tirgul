@@ -1,0 +1,27 @@
+<!-- if the user is null (not valid) -->
+<div class="auth-rapper" *ngIf="(userData$|async) === null">
+  <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+    <input type="email" name="email" placeholder="Enter Email" formControlName="email">
+
+    <input type="tel" name="phone" placeholder="Enter phone number" formControlName="phone">
+    <input type="date" name="birthday" placeholder="Enter burthday" formControlName="birthday">
+    <input type="text" name="address" placeholder="Enter Address" formControlName="address">
+
+    <input type="password" name="password" placeholder="Enter password" formControlName="password">
+    <button type="submit">Register</button>
+  </form>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSignInSubmit()">
+    <input type="email" name="email" placeholder="Enter Email" formControlName="email">
+    <input type="password" name="password" placeholder="Enter password" formControlName="password">
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<!-- if user not null (valid) -->
+<div class="auth-rapper" *ngIf="(authService.user$|async) as user">
+  <div>
+    Hello, {{user.email}}
+    <button (click)="authService.signOut()" class="log-out">SignOut</button>
+  </div>
+</div>
