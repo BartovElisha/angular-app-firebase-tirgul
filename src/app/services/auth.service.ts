@@ -41,7 +41,7 @@ export class AuthService  implements OnDestroy {
     }
   }
 
-  // registration new user in firesbase
+  // Login user in firesbase
   async signIn(email: string, password: string) {
     try {
       const loginResult = await signInWithEmailAndPassword(this.auth, email,password);

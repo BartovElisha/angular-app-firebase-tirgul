@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Auth, User } from '@angular/fire/auth';
+import { Auth } from '@angular/fire/auth';
 import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserData } from '../models/userdate.model';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class DatabaseService {
 
   constructor(private store: Firestore, private auth: Auth) { }
 
+  // private usersCollection is pointer to collection 'users' 
   private usersCollection = collection(this.store,'users');
   usersData = collectionData(this.usersCollection) as Observable<UserData[]>;
   
