@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscribable, Subscription } from 'rxjs';
-import { UserData } from 'src/app/models/userdate.model';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatabaseService } from 'src/app/services/database.service';
 
@@ -13,41 +13,34 @@ import { DatabaseService } from 'src/app/services/database.service';
 export class AuthComponent implements OnInit, OnDestroy {
 
   registerForm = new FormGroup({
-    email: new FormControl('',[Validators.required]),
-    password: new FormControl('',[Validators.required]),
-    phone: new FormControl('',[Validators.required]),
-    birthday: new FormControl('',[Validators.required]),
-    address: new FormControl('',[Validators.required])
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [Validators.required]),
+    birthday: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required])
   });
 
   loginForm = new FormGroup({
-    email: new FormControl('',[Validators.required]),
-    password: new FormControl('',[Validators.required])
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
   });
 
-  userData$: Observable<UserData | null>;
-  userDataSub: Subscription | undefined;
+  userSubscription: Subscription;
 
-  constructor(public authService: AuthService, private databaseService:DatabaseService) {
+  constructor(public authService: AuthService,
+    public databaseService: DatabaseService,
+    public router: Router) {
 
-  this.userData$ = new Observable(subscribe => {
-      this.userDataSub = authService.user$.subscribe(async user => {
-        if (user) {
-          const data = await databaseService.getCurrentUserData();
-          subscribe.next(data);
-        }
-        else {
-          // if user disconected 
-          subscribe.next(null);
-        }
-      })
+    this.userSubscription = authService.user$.subscribe((user) => {
+      if(user !== null) {
+        console.log(databaseService.usersData$);
+        router.navigate(['/home']);
+      }
     })
-
   }
-  ngOnDestroy(): void {
-    if(this.userDataSub) {
-      this.userDataSub.unsubscribe();
-    }    
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
   async onRegisterSubmit() {
@@ -57,9 +50,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     let birthday = this.registerForm.value.birthday!!;
     let address = this.registerForm.value.address!!;
 
-    const uid = await this.authService.singUp(email,password);
-    
-    if(uid) {
+    const uid = await this.authService.singUp(email, password);
+
+    if (uid) {
       this.databaseService.saveUserData({
         email,
         phone,
@@ -67,15 +60,15 @@ export class AuthComponent implements OnInit, OnDestroy {
         birthday,
         uid
       })
-    }        
+    }
   }
 
   onSignInSubmit() {
     let email = this.loginForm.value.email!!; // if it null it converted to false
     let password = this.loginForm.value.password!!;
 
-    this.authService.signIn(email,password);    
-  } 
+    this.authService.signIn(email, password);
+  }
 
   ngOnInit(): void {
   }

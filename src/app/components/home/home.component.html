@@ -1,0 +1,11 @@
+<div *ngIf="databaseService.usersData$|async as user">
+  Hello, {{ user.email.split("@")[0] }}
+
+  <form [formGroup]="notesForm" (ngSubmit)="onAddNote()">
+    <input placeholder="Enter note title" type="text" formControlName="title" />
+    <input placeholder="Enter note content" type="text" formControlName="content" />
+    <input placeholder="Enter note date" type="date" formControlName="date" />
+    <button type="submit">Add Note</button>
+  </form>
+  <button (click)="authService.signOut()">Logout</button>
+</div>

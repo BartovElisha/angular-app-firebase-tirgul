@@ -1,5 +1,5 @@
 <!-- if the user is null (not valid) -->
-<div class="auth-rapper" *ngIf="(userData$|async) === null">
+<div class="auth-rapper" *ngIf="(databaseService.usersData$|async) === null">
   <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
     <input type="email" name="email" placeholder="Enter Email" formControlName="email">
 
